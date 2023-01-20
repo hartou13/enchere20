@@ -52,8 +52,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-    				<includeSystemScope>true</includeSystemScope>
-					<mainClass>com.kilometer.kilo.KiloApplication</mainClass>
+					<Main-Class>com.kilometer.kilo.KiloApplication</Main-Class>
   				</configuration>
 				<executions>
 					<execution>
