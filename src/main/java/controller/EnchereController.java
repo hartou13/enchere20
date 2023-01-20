@@ -105,7 +105,7 @@ public class EnchereController {
     public String getEnchereMise(@PathVariable Integer id,@RequestHeader(name="authorization") String token) throws Exception{
         System.out.println("--------"+id);
         Gson gson = new Gson();
-        if(Token.verifExpired(token)) {
+        if(Token.verifExpiredTokenUser(token)) {
         HashMap<String , Object> res=new HashMap<>();
         Full_v_enchere_statut temp=new Full_v_enchere_statut();
         temp.setIdUtilisateur(id);
