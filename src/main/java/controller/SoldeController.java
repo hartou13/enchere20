@@ -48,7 +48,7 @@ public class SoldeController {
         }
     }
     @GetMapping("/{idUtilisateur}")
-    public String getSoldeusr(@PathVariable(value="idUtilisateur") String idUtilisateur, @RequestHeader(name="authorization") String token) throws Exception{
+    public String getSoldeusr(@PathVariable(value="idUtilisateur") String idUtilisateur, @RequestHeader(name="authorization") String token  ) throws Exception{
         Gson gson = new Gson();
         if(Token.verifExpiredTokenUser(token)) {
         HashMap<String , Object> res=new HashMap<>();

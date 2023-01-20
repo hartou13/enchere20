@@ -95,7 +95,5 @@ public class DemandeController {
         }
     }
     
-    public static void main(String[] args) {
-        SpringApplication.run(DemandeController.class, args);
-    }
+    
 }
