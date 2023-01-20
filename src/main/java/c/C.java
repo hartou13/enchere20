@@ -7,6 +7,8 @@
 package c;
 import connection.Connectar;
 import connection.Postgresql;
+import gdao.genericdao.GenericDAO;
+
 import java.sql.Connection;
 
 /**
@@ -16,8 +18,8 @@ import java.sql.Connection;
 public class C  {
 
     public Connection getConnection() throws Exception {
-        Connectar con=new Connectar(new Postgresql("encheres5"),"postgres","root",true);
-            return con.getConnection();
+        // Connectar con=new Connectar(new Postgresql("encheres5"),"postgres","root",true);
+            return GenericDAO.getConPost();
     }
     
 }
