@@ -53,7 +53,15 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
     				<includeSystemScope>true</includeSystemScope>
+					<mainClass>com.kilometer.kilo.KiloApplication</mainClass>
   				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
