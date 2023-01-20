@@ -21,7 +21,6 @@ import responseHandler.Error;
 
 @RestController
 @RequestMapping("/stat")
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
 public class StatController {
     @GetMapping()
     public String getStat(@RequestHeader(name="authorization") String token) throws Exception{

@@ -25,8 +25,6 @@ import responseHandler.*;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
-
 public class UtilisateurController {
     @GetMapping()
     public String getListUsers(@RequestHeader(name="authorization") String token) throws ClassNotFoundException, SQLException{

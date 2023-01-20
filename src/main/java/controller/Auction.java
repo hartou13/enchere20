@@ -39,7 +39,9 @@ public class Auction {
 		Categorie categorie=new Categorie();
 		if(Token.verifExpired(token)) {
 		try {
-			return gson.toJson(new responseHandler.Success(categorie.getAll()));
+			String res=gson.toJson(new responseHandler.Success(categorie.getAll()));
+			System.gc();
+			return res;
 		} catch (SQLException | DatabaseConfException e) {
 			return gson.toJson(new Failure(new responseHandler.Error(500, "Email , non reconnu veuiller vous inscrire")));
 		

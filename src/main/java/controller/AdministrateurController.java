@@ -24,7 +24,6 @@ import responseHandler.*;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
 public class AdministrateurController {
     @PutMapping()
     public String update(@RequestBody Administrateur user,@RequestHeader(name="authorization") String token) {

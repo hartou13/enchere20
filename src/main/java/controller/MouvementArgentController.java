@@ -20,7 +20,6 @@ import responseHandler.Error;
 
 @RestController
 @RequestMapping("/vola")
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
 
 public class MouvementArgentController {
     @GetMapping()

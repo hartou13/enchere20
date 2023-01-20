@@ -23,7 +23,6 @@ import responseHandler.Response;
 
 @SpringBootApplication
 @RestController
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
 
 public class EnchereApplication {
 

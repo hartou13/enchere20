@@ -36,7 +36,6 @@ import responseHandler.Error;
 @RestController
 @RequestMapping("/dm")
 @SpringBootApplication
-@CrossOrigin(origins="*")
 public class DemandeController {
     @GetMapping
     public String hello(){

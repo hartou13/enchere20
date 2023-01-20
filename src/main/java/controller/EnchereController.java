@@ -31,7 +31,6 @@ import responseHandler.Success;
 
 @RestController
 @RequestMapping("/encheres")
-@CrossOrigin(origins={"http://localhost:3001/","http://localhost:3000/","http://localhost:80/kilometrage/*"})
 public class EnchereController {
     @PostMapping("clore/{id}")
     public String clore(Integer idEnchere){
