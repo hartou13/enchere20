@@ -20,6 +20,8 @@ import responseHandler.Success;
 
 @RestController
 @RequestMapping("/historiqueCommission")
+@CrossOrigin
+
 public class HistoriqueCommissionController {
     @PostMapping
     public String addCommi(@RequestBody HistoriqueCommission hc,@RequestHeader(name="authorization") String token) throws ClassNotFoundException, SQLException{

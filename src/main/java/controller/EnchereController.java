@@ -30,6 +30,8 @@ import responseHandler.Failure;
 import responseHandler.Success;
 
 @RestController
+@CrossOrigin
+
 @RequestMapping("/encheres")
 public class EnchereController {
     @PostMapping("clore/{id}")

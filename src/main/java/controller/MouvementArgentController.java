@@ -20,6 +20,7 @@ import responseHandler.Error;
 
 @RestController
 @RequestMapping("/vola")
+@CrossOrigin
 
 public class MouvementArgentController {
     @GetMapping()

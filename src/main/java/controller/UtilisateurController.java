@@ -25,6 +25,8 @@ import responseHandler.*;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin
+
 public class UtilisateurController {
     @GetMapping()
     public String getListUsers(@RequestHeader(name="authorization") String token) throws ClassNotFoundException, SQLException{

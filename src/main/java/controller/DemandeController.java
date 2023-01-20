@@ -33,6 +33,7 @@ import responseHandler.Error;
  *
  * @author orlando
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/dm")
 @SpringBootApplication

@@ -21,6 +21,8 @@ import responseHandler.Error;
 
 @RestController
 @RequestMapping("/stat")
+@CrossOrigin
+
 public class StatController {
     @GetMapping()
     public String getStat(@RequestHeader(name="authorization") String token) throws Exception{

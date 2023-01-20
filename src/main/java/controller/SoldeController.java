@@ -23,6 +23,7 @@ import responseHandler.*;
 
 @RestController
 @RequestMapping("/solde")
+@CrossOrigin
 
 public class SoldeController {
     @GetMapping()

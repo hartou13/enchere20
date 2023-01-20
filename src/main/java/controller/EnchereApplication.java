@@ -23,6 +23,7 @@ import responseHandler.Response;
 
 @SpringBootApplication
 @RestController
+@CrossOrigin
 
 public class EnchereApplication {
 
