@@ -44,6 +44,7 @@ public class EnchereController {
             MiseGagnante mg=new MiseGagnante();
             mg.setIdMise(v.getIdMise());
             mg.save();
+            System.gc();
             return new Gson().toJson(new Success("true"));
         } catch (Exception e) {
             return new Gson().toJson(new Failure(new Error(500, e.getMessage())));
@@ -133,6 +134,7 @@ public class EnchereController {
         try {
             List<Enchere> listenchere;
 		listenchere = Traitement.listEnchereUtilisateur(utilisateur);
+        System.gc();
 		return gson.toJson(new Success(listenchere));
         } catch (Exception e) {
             e.printStackTrace();

@@ -39,6 +39,7 @@ public class AdministrateurController {
             userTaloha.setRefAdmin(user.getRefAdmin());
             try {
                 userTaloha.update(user);
+                System.gc();
             } catch (Exception e) {
                 e.printStackTrace();
                 return gson.toJson(new Failure(new Error(500, "erreur update")));

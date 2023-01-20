@@ -30,6 +30,7 @@ public class HistoriqueCommissionController {
         try {
             
             hc.save();
+            System.gc();
             return gson.toJson(new Success(hc.get().get(0)));
         } catch (Exception e) {
             e.printStackTrace();

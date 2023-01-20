@@ -35,6 +35,8 @@ public class EnchereApplication {
 	public Response connexionAdmin(@RequestBody Administrator admin){
 		try{
 			Token token=Administrator.connnexion(admin.getEmail(),admin.getMdp());
+			
+			System.gc();
 			return new responseHandler.Success(token);
 		}catch(EmailException e){
 			return new Failure(new responseHandler.Error(500, "Email , non reconnu veuiller vous inscrire"));
@@ -46,6 +48,8 @@ public class EnchereApplication {
 	public OwnResponse connexionUser(@RequestBody User utilisateur){
 		try{
 			Token token=User.connnexion(utilisateur.getEmail(),utilisateur.getMdp());
+			
+			System.gc();
 			return new Success(token);
 		}catch(EmailException e){
 			e.printStackTrace();
@@ -64,6 +68,7 @@ public class EnchereApplication {
 	public OwnResponse inscription(@RequestBody User u) {
 		try{
 			u.inscription();
+			System.gc();
 			return new Success("felicitation vous etes inscrit");
 		}catch(EmailException e){
 			e.printStackTrace();

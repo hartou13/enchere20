@@ -59,7 +59,9 @@ public class Auction {
 		Gson gson=new Gson();
 		if(Token.verifExpired(token)) {
 		try {
-			return gson.toJson(new Success(GenericDAO.getById(categorie,GenericDAO.getConPost())));
+			String retour= gson.toJson(new Success(GenericDAO.getById(categorie,GenericDAO.getConPost())));
+			System.gc();
+			return retour;
 		} catch (Exception e) {
 			return gson.toJson(new Failure(new Error(500,"Erreur de serveur")));
 		}
@@ -79,6 +81,7 @@ public class Auction {
 		if(Token.verifExpired(token)) {
 		try {
 			categorie.save();
+			System.gc();
 			return gson.toJson(new Success(true));
 		} catch (DatabaseConfException e) {
 			return gson.toJson(new Failure(new Error(500,"Insertion echoue")));
@@ -99,6 +102,7 @@ public class Auction {
 		if(Token.verifExpired(token)) {
 		try {
 			categorie.update(newCategorie);
+			System.gc();
 			return gson.toJson(new Success(true));
 		} catch (DatabaseConfException e) {
 			return gson.toJson(new Failure(new Error(500,"Mise a jour echoue")));
@@ -118,6 +122,7 @@ public class Auction {
 		if(Token.verifExpired(token)) {
 		try {
 			categorie.delete();
+			System.gc();
 			return gson.toJson(new Success(true));
 		} catch (DatabaseConfException e) {
 			return gson.toJson(new Failure(new Error(500,"Delete echoue")));

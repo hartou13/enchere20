@@ -140,6 +140,7 @@ public class User {
             if(c!=null){
                 c.close();
             }
+            
         }catch(SQLException e){
             e.printStackTrace();
         }
