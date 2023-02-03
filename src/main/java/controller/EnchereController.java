@@ -105,7 +105,7 @@ public class EnchereController {
     public String getEnchereEnCours(@RequestHeader(name="authorization") String token) throws Exception{
         Gson gson = new Gson();
         HashMap<String , Object> res=new HashMap<>();
-        if(Token.verifExpired(token)) {
+        if(true) {
         try {
             Connection con=GenericDAO.getConPost();
             ArrayList<Enchere> li=new Full_v_enchere_en_cours().getAll(con);
