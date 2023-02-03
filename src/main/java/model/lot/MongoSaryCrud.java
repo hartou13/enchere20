@@ -22,7 +22,7 @@ public class MongoSaryCrud {
     }
     public MongoSaryCrud(){
         mongoClient = MongoClients.create("mongodb+srv://test:test@cluster0.xfzivgg.mongodb.net/?retryWrites=true&w=majority");
-        mongoClient = MongoClients.create();
+        // mongoClient = MongoClients.create();
         database = mongoClient.getDatabase("enchere");
         collection = database.getCollection("datasary");
         // collection = database.getCollection("mycollection");
