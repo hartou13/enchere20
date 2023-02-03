@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import model.gestionArgent.DemandeRecharge;
 import model.gestionArgent.DemandeRecharge_NON_VALIDER;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import responseHandler.*;
 // import request.OwnResponse;
@@ -94,6 +97,20 @@ public class DemandeController {
             return gson.toJson(er);
         }
     }
-    
+    @GetMapping("/demande/{idclient}")
+    public String demander(@PathVariable(value = "idclient") Integer idClient,@RequestParam(name = "sold") Double sold) throws Exception {
+    	Gson gson=new Gson();
+    	if(sold>0) {
+    		DemandeRecharge demande=new DemandeRecharge();
+    		demande.setSomme(sold);
+    		demande.setUtilisateurid(idClient);
+    		demande.save();
+            System.gc();
+    		return gson.toJson(new Success("Success"));
+    	}
+    	else {
+    		return gson.toJson(new Failure(new Error(403, "the balance should be greater than 0")));
+    	}
+    }
     
 }

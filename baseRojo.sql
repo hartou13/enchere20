@@ -46,7 +46,9 @@ CREATE TABLE enchere (
   PRIMARY KEY (id)
 );
 CREATE TABLE historique_commission (
-  id serial, daty date default current_date, valeur float8);
+  id serial, daty date default current_date, valeur float);
+
+insert into historique_commission(valeur) values(5);
 
 create sequence lot_seq;
 CREATE TABLE lot (
@@ -173,10 +175,10 @@ insert into categorie(nomCategorie) values ('peinture');
 insert into categorie(nomCategorie) values ('voiture');
 insert into categorie(nomCategorie) values ('collection');
 
-insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test@example.com','test','testUtilisateur1', 'u1','17/01/1995');
-insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test2@example.com','test2','testUtilisateur2', 'u2','17/01/1994');
-insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test3@example.com','test3','testUtilisateur3', 'u3','07/12/1970');
-insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test4@example.com','test4','testUtilisateur4', 'u4','07/12/1970');
+insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test@example.com','test','testUtilisateur1', 'u1','1995/01/17');
+insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test2@example.com','test2','testUtilisateur2', 'u2','1994/01/12');
+insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test3@example.com','test3','testUtilisateur3', 'u3','1970/12/01');
+insert into utilisateur (email,mdp,nom,prenom,dateDeNaissance) values ('test4@example.com','test4','testUtilisateur4', 'u4','1985/05/06');
 
 insert into demandeRecharge(somme, utilisateurid) values (500000, 1);
 insert into demandeRecharge(somme, utilisateurid) values (4000000, 2);
@@ -189,16 +191,16 @@ insert into lot(nomlot, descriptionLot, valeur, nombre, utilisateurid) values ('
 insert into lot(nomlot, descriptionLot, valeur, nombre, utilisateurid) values ('Subaru imprezza', 'Bon état', 2000000, 1, 1);
 
 
-insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('10/01/2023 08:00','20 days 2 hours 3 minutes 4 seconds'::interval, 20000,1 ,5);
-insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('10/01/2023 08:00','20 days'::interval, 500000,2 ,5);
-insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('10/01/2023 08:00','2 days'::interval, 500000,3 ,5);
+insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('2023/01/30 08:00','90 days 2 hours 3 minutes 4 seconds'::interval, 20000,1 ,5);
+insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('2023/01/30 08:00','90 days'::interval, 500000,2 ,5);
+insert into enchere (debut, duree, prixDeMisEnEnchere, lotid, commission) values ('2023/01/30 08:00','2 days'::interval, 500000,3 ,5);
 
 
-insert into mise(somme, daty, utilisateurid, enchereid) values (25000, '10/01/2023 08:25', 2, 1 );
-insert into mise(somme, daty, utilisateurid, enchereid) values (30000, '10/01/2023 09:25', 3, 1 );
-insert into mise(somme, daty, utilisateurid, enchereid) values (35000, '10/01/2023 10:25', 2, 1 );
-insert into mise(somme, daty, utilisateurid, enchereid) values (600000, '13/01/2023 19:25', 2, 2 );
-insert into mise(somme, daty, utilisateurid, enchereid) values (600000, '13/01/2023 19:25', 2, 3 );
+insert into mise(somme, daty, utilisateurid, enchereid) values (25000, '2023/01/30 08:25', 2, 1 );
+insert into mise(somme, daty, utilisateurid, enchereid) values (30000, '2023/01/30 09:25', 3, 1 );
+insert into mise(somme, daty, utilisateurid, enchereid) values (35000, '2023/01/30 10:25', 2, 1 );
+insert into mise(somme, daty, utilisateurid, enchereid) values (600000, '2023/02/01 19:25', 2, 2 );
+insert into mise(somme, daty, utilisateurid, enchereid) values (600000, '2023/02/01 19:25', 2, 3 );
 
 insert into categorie_lot values (1,1);
 insert into categorie_lot values (3,2);
@@ -291,7 +293,7 @@ WHERE date(debut) = current_date;
 create or replace view v_enchere_en_cours as 
 SELECT *
 FROM enchere
-WHERE debut + (duree)::interval > current_timestamp and id not in (select enchereid from misegagnante join mise on mise.id =misegagnante.miseid);
+WHERE debut < current_timestamp and debut + (duree)::interval > current_timestamp and id not in (select enchereid from misegagnante join mise on mise.id =misegagnante.miseid);
 
 create or replace view v_enchere_en_cours_nb as select CAST(COUNT(id) AS INT) as isa from v_enchere_en_cours;
 
@@ -340,12 +342,8 @@ Update utilisateur set mdp='86985e105f79b95d6bc918fb45ec7727' where email='test4
 
 -- public.v_mise_max source
 
-CREATE OR REPLACE VIEW public.v_mise_max
-AS SELECT enchere.id AS idenchere,
-    max(mise.somme) AS maxmise
-   FROM enchere
-     JOIN mise ON mise.enchereid = enchere.id
-  GROUP BY enchere.id;
+CREATE OR REPLACE VIEW public.v_mise_max AS 
+SELECT enchere.id AS idenchere,    max(mise.somme) AS maxmise   FROM enchere     JOIN mise ON mise.enchereid = enchere.id  GROUP BY enchere.id;
 
 -- public.demanderecharge_non_valider source
 
@@ -362,23 +360,38 @@ AS SELECT demanderecharge.id,
   WHERE NOT (demanderecharge.id IN ( SELECT mouvementargent.demanderechargeid
            FROM mouvementargent));
 
-create view full_v_enchere_en_cours as
-select v_enchere_en_cours.*, maxmise, utilisateurid from v_enchere_en_cours join v_mise_max on v_mise_max.idenchere=v_enchere_en_cours.id join mise on mise.somme=v_mise_max.maxmise and v_enchere_en_cours.id=mise.enchereid;
+create or replace view full_v_enchere_en_cours as
+select v_enchere_en_cours.*, maxmise, mise.utilisateurid as miseur, lot.utilisateurid, nomlot from v_enchere_en_cours left join v_mise_max on v_mise_max.idenchere=v_enchere_en_cours.id left join mise on mise.somme=v_mise_max.maxmise and v_enchere_en_cours.id=mise.enchereid left join lot on lot.id=v_enchere_en_cours.lotid;
 
 create or replace view full_v_enchere_tokn_vitaina as
 select v_enchere_tokn_vitaina.*, maxmise, utilisateurid, mise.id as miseid from V_enchere_tokn_vitaina join v_mise_max on v_mise_max.idenchere=v_enchere_tokn_vitaina.id join mise on mise.somme=v_mise_max.maxmise and v_enchere_tokn_vitaina.id=mise.enchereid;
 create view v_enchere_vita as
 select enchereid from miseGagnante join mise on mise.id=miseid join enchere on enchere.id=enchereid group by enchereid;
-
+-----0 did not begin 1 going on 2 to be finished 3 finished
 CREATE OR REPLACE VIEW v_enchere_status AS
 SELECT enchere.id, enchere.refEnchere, enchere.debut, enchere.duree, enchere.prixDeMisEnEnchere, enchere.Lotid, enchere.commission,
 CASE
     WHEN enchere.id IN (SELECT id FROM v_enchere_vita) AND enchere.debut + enchere.duree < NOW() THEN 'finished'
     WHEN enchere.id NOT IN (SELECT id FROM v_enchere_vita) AND enchere.debut + enchere.duree < NOW() THEN 'to be finished'
     WHEN enchere.debut + enchere.duree > NOW() AND enchere.debut < NOW() THEN 'going on'
-    ELSE 'did not begin'
+    ELSE 'did not begin' 
 END AS status
 FROM enchere;
 
+
+
 create or replace view full_v_enchere_statut as 
-select v_enchere_status.*, utilisateurid from (select utilisateurid, enchereid from mise group by utilisateurid, enchereid) as mise join v_enchere_status on enchereid=v_enchere_status.id;
+select v_enchere_status.*, mise.utilisateurid, mise.somme, nomlot, maxmise from (select utilisateurid, enchereid, max(somme) as somme from mise group by utilisateurid, enchereid) as mise join v_enchere_status on enchereid=v_enchere_status.id join lot on lotid=lot.id left join v_mise_max on v_mise_max.idenchere=v_enchere_status.id ;
+
+create or replace view v_enchere_recherche as 
+select v_enchere_status.*, lot.nomlot from v_enchere_status left join lot on lotid=lot.id ;
+select v_enchere_status.*, lot.nomlot, categorie_lot.categorieid from v_enchere_status join lot on lotid=lot.id join categorie_lot on categorie_lot.lotid=v_enchere_status.lotid;
+
+
+create view v_enchere_statut_lot as
+select v_enchere_status.*, lot.reflot, lot.nomlot, lot.descriptionlot, lot.valeur, lot.nombre, lot.utilisateurid from v_enchere_status join lot on lotid=lot.id;
+
+create view v_comission_actuelle as 
+select * from historique_commission order by daty desc limit 1 offset 0;
+
+select v_enchere_en_cours.*, maxmise, mise.utilisateurid as miseur, lot.utilisateurid, nomlot from v_enchere_en_cours left join v_mise_max on v_mise_max.idenchere=v_enchere_en_cours.id left join mise on mise.somme=v_mise_max.maxmise and v_enchere_en_cours.id=mise.enchereid left join lot on lot.id=v_enchere_en_cours.lotid;

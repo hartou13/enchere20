@@ -25,7 +25,6 @@ import responseHandler.*;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin
-
 public class AdministrateurController {
     @PutMapping()
     public String update(@RequestBody Administrateur user,@RequestHeader(name="authorization") String token) {

@@ -27,6 +27,7 @@ E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\stat\V_m
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\Historique.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\responseHandler\Error.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\gdao\inherit\DBModel.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_enchere_recherche.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\stat\V_depense_moy.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\stat\Full_v_nb_mise_par_enchere.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\gestionArgent\DemandeRecharge.java
@@ -36,6 +37,7 @@ E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\helpers\Encryp
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\DemandeController.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\Full_V_enchere_tokn_vitaina.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\dbaccess\valid\Validable.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\EncherirController.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\utilisateur\Utilisateur.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\helpers\TokenManager.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\HistoriqueCommission.java
@@ -43,6 +45,7 @@ E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\stat\V_e
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\gdao\genericdao\GenericDAO.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\responseHandler\Failure.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\c\C.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\requestHandler\AdvSearchParams.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\EnchereController.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\MouvementArgentController.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\stat\V_month_enchere_nb.java
@@ -54,18 +57,23 @@ E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\gestionA
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\lot\CategorieLot.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\gdao\confreader\reader\Reader.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_today_enchere.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\lot\Sary.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\connection\Connectar.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\lot\Lot.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\HistoriqueCommissionController.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\helpers\LotEnchere.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\gestionArgent\V_vola_miditra.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\Mise.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\UtilisateurController.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_comission_actuelle.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\lot\Categorie.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_enchere_en_cours.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\gestionArgent\V_solde_user.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\Traitement.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_enchere_statut_lot.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\enchere\V_month_enchere.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\responseHandler\Success.java
+E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\lot\MongoSaryCrud.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\helpers\Token.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\model\Administrator.java
 E:\ITU\s5\Mr Rojo\enchere s5\testSpringBoot\enchere\src\main\java\controller\SoldeController.java

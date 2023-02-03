@@ -8,8 +8,8 @@ public class DemandeRecharge extends EnchereEntity<DemandeRecharge>{
     String refDemande;
     @ColumnName
     Double somme;
-    @ColumnName("utilisateurid")
-    String idUtilisateur;
+    @ColumnName
+    Integer utilisateurid;
     public String getRefDemande() {
         return refDemande;
     }
@@ -22,11 +22,13 @@ public class DemandeRecharge extends EnchereEntity<DemandeRecharge>{
     public void setSomme(Double somme) {
         this.somme = somme;
     }
-    public String getIdUtilisateur() {
-        return idUtilisateur;
+    public Integer getUtilisateurid() {
+        return utilisateurid;
     }
-    public void setIdUtilisateur(String idUtilisateur) {
-        this.idUtilisateur = idUtilisateur;
+    public void setUtilisateurid(Integer utilisateurid) {
+        this.utilisateurid = utilisateurid;
     }
+    
+    
     
 }

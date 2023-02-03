@@ -34,22 +34,17 @@ import helpers.Token;
 public class Auction {
 	@CrossOrigin
 	@GetMapping("/getAll")
-	public String getAll(@RequestHeader(name="authorization") String token) throws Exception {
+	public String getAll() throws Exception {
 		Gson gson=new Gson();
 		Categorie categorie=new Categorie();
-		if(Token.verifExpired(token)) {
 		try {
 			String res=gson.toJson(new responseHandler.Success(categorie.getAll()));
 			System.gc();
 			return res;
 		} catch (SQLException | DatabaseConfException e) {
 			return gson.toJson(new Failure(new responseHandler.Error(500, "Email , non reconnu veuiller vous inscrire")));
-		
 		}
-		}else {
-    	    Failure er=new Failure(new Error(403, "You are not allowed to access"));
-        	return gson.toJson(er);
-        }
+		
 	}
 	
 	@CrossOrigin

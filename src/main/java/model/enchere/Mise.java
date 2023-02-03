@@ -1,5 +1,9 @@
 package model.enchere;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 
 import gdao.genericdao.ColumnName;
@@ -46,6 +50,23 @@ public class Mise extends EnchereEntity<Mise>{
     public void setIdEnchere(Integer idEnchere) {
         this.idEnchere = idEnchere;
     }
+    
+    public Mise getMiseMax(Integer idEnchere,Connection con) throws Exception {
+    	Mise mise=new Mise();
+    	String sql="select * from mise where enchereid="+idEnchere+" and somme=(select max(somme) from mise where enchereid="+idEnchere+")";
+    	PreparedStatement stmt=con.prepareStatement(sql);
+    	ResultSet res=stmt.executeQuery();
+    	while(res.next()) {
+    		mise=getById(res.getInt("id"));
+    	}
+    	return mise;
+    }
+    @Override
+    public String toString() {
+        return "Mise [refMise=" + refMise + ", somme=" + somme + ", daty=" + daty + ", idUtilisateur=" + idUtilisateur
+                + ", idEnchere=" + idEnchere + "]";
+    }
+    
     
 
 }

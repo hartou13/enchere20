@@ -1,23 +1,25 @@
 package model.lot;
 
 import gdao.genericdao.ColumnName;
+import gdao.genericdao.TableName;
 import gdao.inherit.DBModel;
 
+@TableName("categorie_lot")
 public class CategorieLot extends DBModel<CategorieLot, Integer> {
     @ColumnName("Categorieid")
-    String idCategorie;
+    Integer idCategorie;
     @ColumnName("Lotid")
-    String idLot;
-    public String getIdCategorie() {
+    Integer idLot;
+    public Integer getIdCategorie() {
         return idCategorie;
     }
-    public void setIdCategorie(String idCategorie) {
+    public void setIdCategorie(Integer idCategorie) {
         this.idCategorie = idCategorie;
     }
-    public String getIdLot() {
+    public Integer getIdLot() {
         return idLot;
     }
-    public void setIdLot(String idLot) {
+    public void setIdLot(Integer idLot) {
         this.idLot = idLot;
     }
     

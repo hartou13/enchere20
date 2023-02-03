@@ -113,7 +113,7 @@ public class User {
         }
         return rep;
     }
-    public  void inscription(Connection c)throws EmailException{
+    public  void inscription(Connection c)throws EmailException, NoSuchAlgorithmException, UnsupportedEncodingException{
         String req="insert into utilisateur(email,mdp,nom,prenom,dateDeNaissance) values(?,?,?,?,?)";
         if(verifEmail(this.getEmail())==true){
             throw new EmailException("Veuillez entrer un autre email , elle existe deja");
@@ -122,7 +122,7 @@ public class User {
             try{
             PreparedStatement stmt=c.prepareStatement(req);
             stmt.setString(1, this.getEmail());
-            stmt.setString(2, this.getMdp());
+            stmt.setString(2, Encrypte.SHA1(this.getMdp()));
             stmt.setString(3, this.getNom());
             stmt.setString(4, this.getPrenom());
             stmt.setDate(5, this.dateDeNaissance);
@@ -142,6 +142,12 @@ public class User {
             }
             
         }catch(SQLException e){
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

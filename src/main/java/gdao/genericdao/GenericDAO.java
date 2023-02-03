@@ -58,7 +58,8 @@ public class GenericDAO {
     public static Field getPK(Class cl){
         Field[] liFi=listAllFields(cl);
         for (Field liFi1 : liFi) {
-            if (getColumnName(liFi1).pk()) {
+            ColumnName ctemp=getColumnName(liFi1);
+            if (ctemp!= null && ctemp.pk()) {
                 return liFi1;
             }
         }
@@ -140,6 +141,24 @@ public class GenericDAO {
             res[i] = fi.get(i);
         return res;
     }
+    public static Field[] listAllAnnFields(Class cl) {
+        ArrayList<Field> fi = new ArrayList<>();
+
+        fi.addAll(Arrays.asList(cl.getDeclaredFields()));
+        while (cl.getSuperclass() != DBModel.class && cl.getSuperclass() != Madre.class
+                && cl.getSuperclass() != Hija.class && cl.getSuperclass() != Object.class) {
+            cl = cl.getSuperclass();
+            System.out.println(cl);
+            fi.addAll(Arrays.asList(cl.getDeclaredFields()));
+        }
+        ArrayList<Field> res = new ArrayList<>();
+        for (Field field : fi) {
+            ColumnName cn = getColumnName(field);
+            if(cn!=null)
+                res.add(field);
+        }
+        return res.toArray(new Field[res.size()]);
+    }
 
     public static String checkTableName(Object o, String sql) {
         if (getTableName(o.getClass()) != null) {
@@ -154,7 +173,7 @@ public class GenericDAO {
     }
     public static void updateList(ArrayList<String> listChamp,ArrayList listObj , Object o){
         System.out.println(o);
-        Field[] liFi = listAllFields(o.getClass());
+        Field[] liFi = listAllAnnFields(o.getClass());
         for (int i = 0; i < liFi.length; i++) {
             try {
                 Method get=getter(liFi[i]);
@@ -526,11 +545,11 @@ public class GenericDAO {
                                 }
                             }
                         }
-                        else if (liFi[i].getType().getSimpleName().equalsIgnoreCase("Date")) {
+                        else if (fiSetable.get(i).getType().getSimpleName().equalsIgnoreCase("Date")) {
                             java.sql.Date temp=RS.getDate(champSelect.get(i));
                             set.invoke(otemp, new Date(temp.getTime()));
                         } 
-                        else if (liFi[i].getType().getSimpleName().equalsIgnoreCase("Duration")) {
+                        else if (fiSetable.get(i).getType().getSimpleName().equalsIgnoreCase("Duration")) {
                             PGInterval pgInterval = (PGInterval) RS.getObject(champSelect.get(i));
                             Duration duration = Duration.ofSeconds((long) pgInterval.getSeconds(), pgInterval.getMicroSeconds() * 1000);
                             set.invoke(otemp, duration);

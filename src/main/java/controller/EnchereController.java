@@ -12,9 +12,12 @@ import java.util.List;
  */import org.springframework.web.bind.annotation.*;
 
 import com.google.gson.Gson;
+import com.kilometer.kilo.KiloApplication;
 
+import c.C;
 import gdao.genericdao.GenericDAO;
 import gdao.genericdao.exception.DatabaseConfException;
+import helpers.LotEnchere;
 import helpers.Token;
 import model.Historique;
 import model.Traitement;
@@ -22,11 +25,22 @@ import model.enchere.Enchere;
 import model.enchere.Full_V_enchere_tokn_vitaina;
 import model.enchere.Full_v_enchere_en_cours;
 import model.enchere.Full_v_enchere_statut;
+import model.enchere.HistoriqueCommission;
 import model.enchere.MiseGagnante;
+import model.enchere.V_comission_actuelle;
 import model.enchere.V_enchere_en_cours;
+import model.enchere.V_enchere_recherche;
+import model.enchere.V_enchere_statut_lot;
 import model.enchere.V_enchere_tokn_vitaina;
+import model.lot.Categorie;
+import model.lot.CategorieLot;
+import model.lot.Lot;
+import model.lot.MongoSaryCrud;
+import model.lot.Sary;
+import requestHandler.AdvSearchParams;
 import responseHandler.Error;
 import responseHandler.Failure;
+import responseHandler.Response;
 import responseHandler.Success;
 
 @RestController
@@ -41,6 +55,12 @@ public class EnchereController {
             Full_V_enchere_tokn_vitaina v=new Full_V_enchere_tokn_vitaina();
             v.setId(idEnchere);
             v=(Full_V_enchere_tokn_vitaina) v.get().get(0);
+            Lot lot=new Lot();
+            lot.setId(v.getIdLot());
+            lot=lot.get().get(0);
+
+            KiloApplication.sendNotification(lot);
+
             MiseGagnante mg=new MiseGagnante();
             mg.setIdMise(v.getIdMise());
             mg.save();
@@ -88,7 +108,12 @@ public class EnchereController {
         if(Token.verifExpired(token)) {
         try {
             Connection con=GenericDAO.getConPost();
-            res.put("liste", new Full_v_enchere_en_cours().getAll(con));
+            ArrayList<Enchere> li=new Full_v_enchere_en_cours().getAll(con);
+            for (Enchere enchere : li) {
+                enchere.getListSary();
+                System.out.println(enchere);
+            }
+            res.put("liste", li);
             con.close();
             System.gc();
         } catch (Exception e) {
@@ -112,7 +137,11 @@ public class EnchereController {
         temp.setIdUtilisateur(id);
         try {
             Connection con=GenericDAO.getConPost();
-            res.put("liste", temp.get(con));
+            ArrayList<Enchere> list=temp.get(con);
+            for (Enchere enchere : list) {
+                enchere.getListSary();
+            }
+            res.put("liste", list);
             con.close();
             System.gc();
         } catch (Exception e) {
@@ -121,6 +150,30 @@ public class EnchereController {
             return gson.toJson(new Failure(new Error(500, "Error getting encheres")));
         }
         return gson.toJson(new Success(res));
+        }else {
+            Failure er=new Failure(new Error(403, "You are not allowed to access"));
+            return gson.toJson(er);
+        }
+    }
+    @GetMapping("/ownAuction/{id}")
+    public String ownAuction(@PathVariable Integer id,@RequestHeader(name="authorization") String token) throws Exception{
+        System.out.println("--------"+id);
+        Gson gson = new Gson();
+        if(Token.verifExpiredTokenUser(token)) {
+        V_enchere_statut_lot temp=new V_enchere_statut_lot();
+        temp.setUtilisateur(id);
+        Object o;
+        try {
+            Connection con=GenericDAO.getConPost();
+            o= temp.get(con);
+            con.close();
+            System.gc();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return gson.toJson(new Failure(new Error(500, "Error getting encheres")));
+        }
+        return gson.toJson(new Success(o));
         }else {
             Failure er=new Failure(new Error(403, "You are not allowed to access"));
             return gson.toJson(er);
@@ -141,4 +194,83 @@ public class EnchereController {
             return gson.toJson(new Failure(new Error(500,e.getMessage())));    
         }
 	}
+    @PostMapping("/search")
+	public String search(@RequestBody AdvSearchParams params) throws Exception{
+        Gson gson = new Gson();
+        try {
+            ArrayList<V_enchere_recherche> res=params.getResult();
+            System.gc();
+            return gson.toJson(new Success(res));
+        } catch (Exception e) {
+            return gson.toJson(new Failure(new Error(500,e.getMessage())));
+        }
+        
+	}
+    @PostMapping("/insertenchere")
+    public String insert(@RequestBody LotEnchere lot) throws Exception{
+        Lot l=lot.getLot();
+        C c=new C();
+        Connection con=c.getConnection();
+        con.setAutoCommit(false);
+        try {
+            //save lot
+            l.save(con);
+            Lot za=l.get(con).get(0);
+            // za.setUtilisateurId(null);
+            System.out.println(za.getId());
+
+            za.getId();
+            // insertion sary
+            MongoSaryCrud msc=new MongoSaryCrud();
+			Sary temp2=new Sary();
+			temp2.setIdLot(za.getId());
+            for (int i = 0; i < lot.getPhoto64().length; i++) {
+                temp2.setSary(lot.getPhoto64()[i]);
+                msc.create(temp2);
+            }
+            msc.close();
+            
+
+
+            //save categorie
+            Categorie[] listecat=lot.getListe();
+            for(Categorie i:listecat){
+                CategorieLot temp=new CategorieLot();
+                temp.setIdLot(za.getId());
+                temp.setIdCategorie(i.getId());
+                temp.save(con);
+            }
+            
+            //save enchere
+            Enchere enchere =lot.getEnchere();
+            enchere.setIdLot(za.getId());
+            HistoriqueCommission hc=new V_comission_actuelle().get().get(0);
+            enchere.setCommission(hc.getValeur());
+            enchere.save(con);
+            con.commit();
+            con.close();
+            
+            
+        } catch (Exception ex) {
+            con.rollback();
+            con.close();
+            return new Gson().toJson(new Failure(new Error(500, ex.getMessage())));
+        }
+        return (new Gson()).toJson(lot.getListe());
+    }
+    @GetMapping("/{id}")
+	public String getEnchere(@PathVariable(value="id") Integer idEnchere)
+	{
+		Gson gson=new Gson();
+		try {
+			Enchere enchere=new Enchere().getById(idEnchere);
+			Lot lot=new Lot().getById(enchere.getIdLot());
+            System.gc();
+			return gson.toJson(new Success(lot));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}	
 }

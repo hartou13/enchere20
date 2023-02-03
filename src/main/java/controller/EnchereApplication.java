@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import exception.EmailException;
 import exception.PasswordException;
+import helpers.Encrypte;
 import helpers.ErrInfo;
 import helpers.Error;
 import helpers.OwnResponse;
@@ -18,6 +22,7 @@ import helpers.Success;
 import helpers.Token;
 import model.Administrator;
 import model.User;
+import model.utilisateur.Utilisateur;
 import responseHandler.Failure;
 import responseHandler.Response;
 
@@ -31,6 +36,7 @@ public class EnchereApplication {
 	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
 	}
+	
 	@PostMapping("/ConnexionAdmin")
 	public Response connexionAdmin(@RequestBody Administrator admin){
 		try{
@@ -68,12 +74,39 @@ public class EnchereApplication {
 	public OwnResponse inscription(@RequestBody User u) {
 		try{
 			u.inscription();
+			Utilisateur usr=new Utilisateur();
+			usr.setEmail(u.getEmail());
+			usr.setDateDeNaissance(u.getDateDeNaissance());
+			usr.setMdp(Encrypte.SHA1(u.getMdp()));
+			usr=usr.get().get(0);
 			System.gc();
-			return new Success("felicitation vous etes inscrit");
+			return new Success(usr);
 		}catch(EmailException e){
-			e.printStackTrace();
+			// e.printStackTrace();
 			Error er=new Error();
 			er.setInfo(new ErrInfo(500, "cette Email existe deja inserer un nouveau"));
+			System.gc();
+			return er;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			Error er=new Error();
+			er.setInfo(new ErrInfo(500, e.getMessage()));
+			System.gc();
+			
+			return er;
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			Error er=new Error();
+			er.setInfo(new ErrInfo(500, e.getMessage()));
+			System.gc();
+			
+			return er;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Error er=new Error();
+			er.setInfo(new ErrInfo(500, e.getMessage()));
+			System.gc();
+			
 			return er;
 		}
 	}	
